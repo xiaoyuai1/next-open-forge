@@ -6,9 +6,9 @@ let nextConfig: NextConfig = config;
 
 nextConfig.redirects = async () => [
   {
-    source: "/",
     destination: "/en",
     permanent: true,
+    source: "/",
   },
 ];
 

@@ -5,8 +5,8 @@ import { keys as analytics } from "@repo/product/keys";
 import { createEnv } from "@t3-oss/env-nextjs";
 
 export const env = createEnv({
-  extends: [auth(), analytics(), core(), database()],
-  server: {},
   client: {},
+  extends: [auth(), analytics(), core(), database()],
   runtimeEnv: {},
+  server: {},
 });

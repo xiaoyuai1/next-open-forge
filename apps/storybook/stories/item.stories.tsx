@@ -10,27 +10,25 @@ import {
 import type { Meta, StoryObj } from "@storybook/react";
 
 const meta = {
-  title: "ui/Item",
-  component: ItemGroup,
-  tags: ["autodocs"],
-  argTypes: {
-    variant: {
-      options: ["default", "outline", "muted"],
-      control: {
-        type: "select",
-      },
-    },
-    size: {
-      options: ["default", "sm", "xs"],
-      control: {
-        type: "select",
-      },
-    },
-  },
   args: {
-    variant: "default",
     size: "default",
+    variant: "default",
   },
+  argTypes: {
+    size: {
+      control: {
+        type: "select",
+      },
+      options: ["default", "sm", "xs"],
+    },
+    variant: {
+      control: {
+        type: "select",
+      },
+      options: ["default", "outline", "muted"],
+    },
+  },
+  component: ItemGroup,
   render: (args) => (
     <Item {...args}>
       <ItemContent>
@@ -46,6 +44,8 @@ const meta = {
       </ItemActions>
     </Item>
   ),
+  tags: ["autodocs"],
+  title: "ui/Item",
 } satisfies Meta<typeof Item>;
 
 export default meta;

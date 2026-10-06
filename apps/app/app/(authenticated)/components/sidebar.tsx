@@ -52,8 +52,6 @@ type GlobalSidebarProperties = {
 const data = {
   navMain: [
     {
-      title: "Playground",
-      url: "#",
       icon: SquareTerminalIcon,
       isActive: true,
       items: [
@@ -70,10 +68,10 @@ const data = {
           url: "#",
         },
       ],
+      title: "Playground",
+      url: "#",
     },
     {
-      title: "Models",
-      url: "#",
       icon: BotIcon,
       items: [
         {
@@ -89,10 +87,10 @@ const data = {
           url: "#",
         },
       ],
+      title: "Models",
+      url: "#",
     },
     {
-      title: "Documentation",
-      url: "#",
       icon: BookOpenIcon,
       items: [
         {
@@ -112,10 +110,10 @@ const data = {
           url: "#",
         },
       ],
+      title: "Documentation",
+      url: "#",
     },
     {
-      title: "Settings",
-      url: "#",
       icon: Settings2Icon,
       items: [
         {
@@ -135,35 +133,37 @@ const data = {
           url: "#",
         },
       ],
+      title: "Settings",
+      url: "#",
     },
   ],
   navSecondary: [
     {
+      icon: LifeBuoyIcon,
       title: "Support",
       url: "#",
-      icon: LifeBuoyIcon,
     },
     {
+      icon: SendIcon,
       title: "Feedback",
       url: "#",
-      icon: SendIcon,
     },
   ],
   projects: [
     {
+      icon: FrameIcon,
       name: "Design Engineering",
       url: "#",
-      icon: FrameIcon,
     },
     {
+      icon: PieChartIcon,
       name: "Sales & Marketing",
       url: "#",
-      icon: PieChartIcon,
     },
     {
+      icon: MapIcon,
       name: "Travel",
       url: "#",
-      icon: MapIcon,
     },
   ],
 };

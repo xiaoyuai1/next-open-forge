@@ -25,24 +25,24 @@ type HeaderProps = {
 export const Header = ({ dictionary }: HeaderProps) => {
   const navigationItems = [
     {
-      title: dictionary.web.header.home,
-      href: "/",
       description: "",
+      href: "/",
+      title: dictionary.web.header.home,
     },
     {
-      title: dictionary.web.header.product.title,
       description: dictionary.web.header.product.description,
       items: [
         {
-          title: dictionary.web.header.product.pricing,
           href: "/pricing",
+          title: dictionary.web.header.product.pricing,
         },
       ],
+      title: dictionary.web.header.product.title,
     },
     {
-      title: dictionary.web.header.blog,
-      href: "/blog",
       description: "",
+      href: "/blog",
+      title: dictionary.web.header.blog,
     },
   ];
 
@@ -86,6 +86,7 @@ export const Header = ({ dictionary }: HeaderProps) => {
                               <NavigationMenuLink
                                 className="flex flex-row items-center justify-between rounded px-4 py-2 hover:bg-muted"
                                 href={subItem.href}
+                                // biome-ignore lint/suspicious/noArrayIndexKey: title is not guaranteed unique, index only disambiguates
                                 key={`navigation-menu-link-${subItem.title}-${index}`}
                               >
                                 <span>{subItem.title}</span>

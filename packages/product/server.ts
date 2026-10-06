@@ -3,7 +3,7 @@ import { PostHog } from "posthog-node";
 import { keys } from "./keys";
 
 export const product = new PostHog(keys().NEXT_PUBLIC_POSTHOG_KEY, {
-  host: keys().NEXT_PUBLIC_POSTHOG_HOST,
   flushAt: 1,
   flushInterval: 0,
+  host: keys().NEXT_PUBLIC_POSTHOG_HOST,
 });

@@ -11,11 +11,9 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { ArrowUpRightIcon, FolderCodeIcon } from "lucide-react";
 
 const meta = {
-  title: "ui/Empty",
-  component: Empty,
-  tags: ["autodocs"],
-  argTypes: {},
   args: {},
+  argTypes: {},
+  component: Empty,
   render: (args) => (
     <Empty {...args}>
       <EmptyHeader>
@@ -44,6 +42,8 @@ const meta = {
       </Button>
     </Empty>
   ),
+  tags: ["autodocs"],
+  title: "ui/Empty",
 } satisfies Meta<typeof Empty>;
 
 export default meta;

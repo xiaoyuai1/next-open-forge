@@ -22,11 +22,9 @@ import {
 } from "lucide-react";
 
 const meta = {
-  title: "ui/InputGroup",
-  component: InputGroup,
-  tags: ["autodocs"],
-  argTypes: {},
   args: {},
+  argTypes: {},
+  component: InputGroup,
   render: (args) => (
     <InputGroup className="max-w-xs" {...args}>
       <InputGroupInput placeholder="Search..." />
@@ -36,6 +34,8 @@ const meta = {
       <InputGroupAddon align="inline-end">12 results</InputGroupAddon>
     </InputGroup>
   ),
+  tags: ["autodocs"],
+  title: "ui/InputGroup",
 } satisfies Meta<typeof InputGroup>;
 
 export default meta;

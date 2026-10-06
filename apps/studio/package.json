@@ -2,11 +2,11 @@
   "name": "studio",
   "version": "0.0.0",
   "scripts": {
-    "dev": "drizzle-kit studio --port 3005 --config ./drizzle.config.ts",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "dev": "drizzle-kit studio --port 3005 --config ./drizzle.config.ts",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "devDependencies": {
-    "drizzle-kit": "0.31.8"
+    "drizzle-kit": "0.31.11"
   }
 }

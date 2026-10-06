@@ -22,4 +22,5 @@ export const JsonLd = ({ code }: JsonLdProps) => (
   />
 );
 
+// biome-ignore lint/performance/noBarrelFile: intentional type-only re-export of schema-dts
 export * from "schema-dts";

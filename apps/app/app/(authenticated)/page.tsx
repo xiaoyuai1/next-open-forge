@@ -6,8 +6,8 @@ const title = "Acme Inc";
 const description = "My application.";
 
 export const metadata: Metadata = {
-  title,
   description,
+  title,
 };
 
 export default async function App() {

@@ -14,11 +14,9 @@ import {
 } from "lucide-react";
 
 const meta = {
-  title: "ui/ButtonGroup",
-  component: ButtonGroup,
-  tags: ["autodocs"],
-  argTypes: {},
   args: {},
+  argTypes: {},
+  component: ButtonGroup,
   render: (args) => (
     <ButtonGroup {...args}>
       <ButtonGroup className="hidden sm:flex">
@@ -38,6 +36,8 @@ const meta = {
       </ButtonGroup>
     </ButtonGroup>
   ),
+  tags: ["autodocs"],
+  title: "ui/ButtonGroup",
 } satisfies Meta<typeof ButtonGroup>;
 
 export default meta;

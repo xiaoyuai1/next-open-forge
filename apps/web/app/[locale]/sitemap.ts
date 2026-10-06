@@ -15,12 +15,12 @@ const url = new URL(`${protocol}://${env.NEXT_PUBLIC_PROJECT_PRODUCTION_URL}`);
 
 const sitemap = async (): Promise<MetadataRoute.Sitemap> => [
   {
-    url: new URL("/", url).href,
     lastModified: new Date(),
+    url: new URL("/", url).href,
   },
   ...pages.map((page) => ({
-    url: new URL(page, url).href,
     lastModified: new Date(),
+    url: new URL(page, url).href,
   })),
 ];
 

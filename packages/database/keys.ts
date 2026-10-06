@@ -3,10 +3,10 @@ import { z } from "zod";
 
 export const keys = () =>
   createEnv({
-    server: {
-      DATABASE_URL: z.url(),
-    },
     runtimeEnv: {
       DATABASE_URL: process.env.DATABASE_URL,
+    },
+    server: {
+      DATABASE_URL: z.url(),
     },
   });

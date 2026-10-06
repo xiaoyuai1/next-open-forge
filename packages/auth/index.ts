@@ -41,10 +41,10 @@ export async function signUpEmail(
   const result = await auth.api.signUpEmail({
     body: {
       displayUsername: name,
-      username,
-      name,
       email,
+      name,
       password,
+      username,
     },
   });
 
@@ -79,6 +79,4 @@ export async function requireUnauthenticatedUser(redirectTo: string) {
   if (user) {
     redirect(redirectTo);
   }
-
-  return;
 }

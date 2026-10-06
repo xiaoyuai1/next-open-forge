@@ -3,20 +3,20 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "generate": "@better-auth/cli@latest generate --config server.ts",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "generate": "@better-auth/cli@latest generate --config server.ts",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "dependencies": {
-    "@t3-oss/env-nextjs": "^0.13.10",
-    "better-auth": "^1.4.18",
     "@repo/database": "workspace:*",
-    "next": "16.1.6",
+    "@t3-oss/env-nextjs": "^0.13.11",
+    "better-auth": "^1.7.7",
+    "next": "16.3.8",
     "server-only": "^0.0.1"
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
-    "@types/node": "25.0.1",
-    "typescript": "^5.9.3"
+    "@types/node": "26.6.4",
+    "typescript": "^7.0.2"
   }
 }

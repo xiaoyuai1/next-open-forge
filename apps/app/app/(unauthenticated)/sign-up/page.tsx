@@ -6,7 +6,7 @@ import SignUpForm from "./components/sign-up-form";
 const title = "Create an account";
 const description = "Enter your details to get started.";
 
-export const metadata: Metadata = createMetadata({ title, description });
+export const metadata: Metadata = createMetadata({ description, title });
 
 export default function SignUpPage() {
   return (

@@ -2,12 +2,12 @@ import { Kbd, KbdGroup } from "@repo/design-system/components/ui/kbd";
 import type { Meta, StoryObj } from "@storybook/react";
 
 const meta = {
-  title: "ui/Kbd",
-  component: Kbd,
-  tags: ["autodocs"],
-  argTypes: {},
   args: {},
+  argTypes: {},
+  component: Kbd,
   render: (args) => <Kbd {...args}>Ctrl</Kbd>,
+  tags: ["autodocs"],
+  title: "ui/Kbd",
 } satisfies Meta<typeof Kbd>;
 
 export default meta;

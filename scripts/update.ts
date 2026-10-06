@@ -34,7 +34,7 @@ const createTemporaryDirectory = async (name: string) => {
   const cwd = process.cwd();
   const tempDir = join(cwd, name);
 
-  await rm(tempDir, { recursive: true, force: true });
+  await rm(tempDir, { force: true, recursive: true });
   await mkdir(tempDir, { recursive: true });
 };
 
@@ -66,7 +66,7 @@ const updateFiles = async (files: string[]) => {
 };
 
 const deleteTemporaryDirectory = async () =>
-  await rm(tempDirName, { recursive: true, force: true });
+  await rm(tempDirName, { force: true, recursive: true });
 
 const getCurrentVersion = async (): Promise<string | undefined> => {
   const packageJsonPath = join(process.cwd(), "package.json");
@@ -82,10 +82,10 @@ const selectVersion = async (
   initialValue: string | undefined
 ) => {
   const version = await select({
-    message: `Select a version to update ${label}:`,
-    options: availableVersions.map((v) => ({ value: v, label: `v${v}` })),
     initialValue,
     maxItems: 10,
+    message: `Select a version to update ${label}:`,
+    options: availableVersions.map((v) => ({ label: `v${v}`, value: v })),
   });
 
   if (isCancel(version)) {
@@ -184,12 +184,12 @@ export const update = async (options: { from?: string; to?: string }) => {
     s.message(`Computing diff between versions ${from} and ${to}...`);
     const diff = await getDiff(
       {
-        version: from,
         files: fromFiles,
+        version: from,
       },
       {
-        version: to,
         files: toFiles,
+        version: to,
       }
     );
 

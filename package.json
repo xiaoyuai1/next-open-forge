@@ -9,41 +9,41 @@
     "dist/index.js"
   ],
   "scripts": {
-    "build": "turbo build",
-    "dev": "turbo dev",
-    "dev:web": "turbo dev --filter=web --filter=storybook",
-    "dev:app": "turbo dev --filter=app --filter=storybook --filter=studio",
-    "dev:docs": "turbo dev --filter=docs",
-    "check": "ultracite check",
-    "fix": "ultracite fix",
-    "test": "turbo test",
     "analyze": "turbo analyze",
-    "translate": "turbo translate",
     "boundaries": "turbo boundaries",
+    "build": "turbo build",
     "bump-deps": "npx npm-check-updates --deep -u -x recharts && pnpm install",
     "bump-ui": "npx shadcn@latest add --all --overwrite -c packages/design-system",
+    "check": "ultracite check",
+    "clean": "git clean -xdf node_modules",
+    "dev": "turbo dev",
+    "dev:app": "turbo dev --filter=app --filter=storybook --filter=studio",
+    "dev:docs": "turbo dev --filter=docs",
+    "dev:web": "turbo dev --filter=web --filter=storybook",
+    "fix": "ultracite fix",
     "migrate": "cd packages/database && npx drizzle-kit generate",
     "push": "cd packages/database && npx drizzle-kit push",
-    "clean": "git clean -xdf node_modules"
+    "test": "turbo test",
+    "translate": "turbo translate"
+  },
+  "dependencies": {
+    "@clack/prompts": "^1.8.1",
+    "commander": "^15.0.0"
   },
   "devDependencies": {
     "@auto-it/first-time-contributor": "^11.3.6",
-    "@biomejs/biome": "2.3.14",
+    "@biomejs/biome": "2.5.15",
     "@repo/typescript-config": "workspace:*",
-    "@turbo/gen": "^2.8.3",
-    "@types/node": "^25.2.1",
+    "@turbo/gen": "^2.11.7",
+    "@types/node": "^26.6.4",
     "tsup": "^8.5.1",
-    "turbo": "^2.8.3",
-    "typescript": "^5.9.3",
-    "ultracite": "7.1.4",
-    "vitest": "^4.0.18"
+    "turbo": "^2.11.7",
+    "typescript": "^7.0.2",
+    "ultracite": "7.12.4",
+    "vitest": "^5.0.3"
   },
+  "packageManager": "pnpm@12.9.1",
   "engines": {
-    "node": ">=22"
-  },
-  "packageManager": "pnpm@10.25.0",
-  "dependencies": {
-    "@clack/prompts": "^1.0.0",
-    "commander": "^14.0.3"
+    "node": ">=24"
   }
 }

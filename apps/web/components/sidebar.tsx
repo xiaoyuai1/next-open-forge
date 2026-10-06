@@ -19,10 +19,10 @@ export const Sidebar = async ({
       <p className="text-muted-foreground text-sm">Published</p>
       <p className="rounded-sm text-foreground text-sm">
         {new Intl.DateTimeFormat("en-US", {
-          month: "short",
           day: "numeric",
-          year: "numeric",
+          month: "short",
           timeZone: "America/New_York",
+          year: "numeric",
         }).format(date)}
       </p>
     </div>

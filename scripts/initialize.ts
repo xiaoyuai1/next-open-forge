@@ -35,7 +35,7 @@ const cloneNextForge = async (name: string, packageManager: string) => {
 
 const deleteInternalContent = async () => {
   for (const folder of internalContentDirs) {
-    await rm(folder, { recursive: true, force: true });
+    await rm(folder, { force: true, recursive: true });
   }
 
   for (const file of internalContentFiles) {
@@ -172,6 +172,7 @@ const getName = async () => {
   const value = await text({
     message: "What is your project named?",
     placeholder: "my-app",
+    // biome-ignore lint/suspicious/noShadow: clack callback parameter mirrors the outer name
     validate(value: string) {
       if (value.length === 0) {
         return "Please enter a project name.";
@@ -189,12 +190,12 @@ const getName = async () => {
 
 const getPackageManager = async () => {
   const value = await select({
+    initialValue: "pnpm",
     message: "Which package manager would you like to use?",
     options: supportedPackageManagers.map((choice) => ({
-      value: choice,
       label: choice,
+      value: choice,
     })),
-    initialValue: "pnpm",
   });
 
   if (isCancel(value)) {

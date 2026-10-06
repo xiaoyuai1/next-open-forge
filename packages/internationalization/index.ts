@@ -17,6 +17,7 @@ export const dictionaries: Record<string, () => Promise<Dictionary>> =
         import(`./dictionaries/${locale}.json`)
           .then((mod) => mod.default)
           .catch((_err) =>
+            // biome-ignore lint/suspicious/noNestedPromises: intentional fallback to the English dictionary
             import("./dictionaries/en.json").then((mod) => mod.default)
           ),
     ])
@@ -31,7 +32,7 @@ export const getDictionary = async (locale: string): Promise<Dictionary> => {
 
   try {
     return await dictionaries[normalizedLocale]();
-  } catch (_error) {
+  } catch {
     return dictionaries.en();
   }
 };

@@ -2,20 +2,20 @@ import ActionButton from "@repo/design-system/components/action-button";
 import type { Meta, StoryObj } from "@storybook/react";
 
 const meta = {
-  title: "components/ActionButton",
-  component: ActionButton,
-  tags: ["autodocs"],
-  parameters: {
-    layout: "centered",
+  args: {
+    isLoading: false,
   },
   argTypes: {
     isLoading: { control: "boolean" },
     loadingText: { control: "text" },
   },
-  args: {
-    isLoading: false,
+  component: ActionButton,
+  parameters: {
+    layout: "centered",
   },
   render: (args) => <ActionButton {...args}>Click Me</ActionButton>,
+  tags: ["autodocs"],
+  title: "components/ActionButton",
 } satisfies Meta<typeof ActionButton>;
 
 export default meta;

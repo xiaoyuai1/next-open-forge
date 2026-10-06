@@ -7,9 +7,8 @@ import languine from "./languine.json" with { type: "json" };
 const locales = [languine.locale.source, ...languine.locale.targets];
 
 const I18nMiddleware = createI18nMiddleware({
-  locales,
   defaultLocale: "en",
-  urlMappingStrategy: "rewriteDefault",
+  locales,
   resolveLocaleFromRequest: (request: NextRequest) => {
     const headers = Object.fromEntries(request.headers.entries());
     const negotiator = new Negotiator({ headers });
@@ -19,6 +18,7 @@ const I18nMiddleware = createI18nMiddleware({
 
     return matchedLocale;
   },
+  urlMappingStrategy: "rewriteDefault",
 });
 
 export const internationalizationMiddleware = (request: NextRequest) =>

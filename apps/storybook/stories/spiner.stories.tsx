@@ -3,12 +3,12 @@ import { Spinner } from "@repo/design-system/components/ui/spinner";
 import type { Meta, StoryObj } from "@storybook/react";
 
 const meta = {
-  title: "ui/Spinner",
-  component: Spinner,
-  tags: ["autodocs"],
-  argTypes: {},
   args: {},
+  argTypes: {},
+  component: Spinner,
   render: (args) => <Spinner {...args} />,
+  tags: ["autodocs"],
+  title: "ui/Spinner",
 } satisfies Meta<typeof Spinner>;
 
 export default meta;

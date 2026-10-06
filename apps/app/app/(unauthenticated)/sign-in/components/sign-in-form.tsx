@@ -19,11 +19,11 @@ import { type SignInFormSchema, signInFormSchema } from "../schemas";
 
 export default function SignInForm() {
   const form = useForm<SignInFormSchema>({
-    resolver: zodResolver(signInFormSchema),
     defaultValues: {
       email: "",
       password: "",
     },
+    resolver: zodResolver(signInFormSchema),
   });
   const [isPending, startTransition] = useTransition();
 

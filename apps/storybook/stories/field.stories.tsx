@@ -9,11 +9,9 @@ import { Input } from "@repo/design-system/components/ui/input";
 import type { Meta, StoryObj } from "@storybook/react";
 
 const meta = {
-  title: "ui/Field",
-  component: FieldSet,
-  tags: ["autodocs"],
-  argTypes: {},
   args: {},
+  argTypes: {},
+  component: FieldSet,
   render: (args) => (
     <FieldSet className="w-full max-w-xs" {...args}>
       <FieldGroup>
@@ -34,6 +32,8 @@ const meta = {
       </FieldGroup>
     </FieldSet>
   ),
+  tags: ["autodocs"],
+  title: "ui/Field",
 } satisfies Meta<typeof FieldSet>;
 
 export default meta;

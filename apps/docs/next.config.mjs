@@ -7,9 +7,9 @@ const config = {
   reactStrictMode: true,
   redirects: async () => [
     {
-      source: "/",
       destination: "/docs",
       permanent: true,
+      source: "/",
     },
   ],
 };
