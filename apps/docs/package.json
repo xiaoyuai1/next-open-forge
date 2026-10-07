@@ -7,27 +7,40 @@
     "dev": "next dev --port 3002",
     "start": "next start --port 3002",
     "typecheck": "fumadocs-mdx && tsc --noEmit",
-    "postinstall": "fumadocs-mdx"
+    "postinstall": "fumadocs-mdx",
+    "dev:vinext": "vite dev --port 3001",
+    "build:vinext": "fumadocs-mdx && vite build",
+    "start:vinext": "vite preview",
+    "deploy:vinext": "vinext-cloudflare deploy"
   },
   "dependencies": {
     "@repo/design-system": "workspace:*",
+    "@vinext/cloudflare": "^1.0.1",
     "fumadocs-core": "^16.16.1",
     "fumadocs-mdx": "^15.4.6",
     "fumadocs-ui": "^16.16.1",
     "lucide-react": "^1.52.0",
     "next": "16.3.8",
     "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "react-dom": "19.3.0",
+    "react-server-dom-webpack": "^19.3.0",
+    "vinext": "^1.0.1"
   },
   "devDependencies": {
+    "@cloudflare/vite-plugin": "2.0.0-beta.sha-52b0dc0e9",
     "@repo/typescript-config": "workspace:*",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/mdx": "^2.0.14",
     "@types/node": "^26.6.4",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "@vitejs/plugin-rsc": "^0.5.35",
+    "cf": "1.0.0-beta.12",
     "postcss": "^8.5.29",
     "tailwindcss": "^4.3.3",
-    "typescript": "^7.0.2"
-  }
+    "typescript": "^7.0.2",
+    "vite": "8.3.0"
+  },
+  "type": "module"
 }
