@@ -11,6 +11,7 @@ export default defineConfig({
     assets: { notFoundHandling: "none" },
     env: {
       ASSETS: bindings.assets(),
+      VINEXT_KV_CACHE: bindings.kv(),
       IMAGES: bindings.images(),
     },
   }),

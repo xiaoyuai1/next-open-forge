@@ -278,3 +278,5 @@ packages/database/generated
 .contentlayer
 .content-collections
 .source
+# IDE
+.idea/

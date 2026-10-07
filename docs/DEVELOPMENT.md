@@ -1,41 +1,42 @@
 # next-open-forge 开发文档
 
-> 本文档是对 [next-open-forge](https://github.com/LuanRoger/next-open-forge) 仓库的实际分析结果(基于 main 分支,commit `ac24745`)。
-> **以后在本仓库的一切开发任务,先读本档,按「第 8 节 架构约定」和「第 9 节 常见任务 SOP」执行。**
+> 本文档是对 [next-open-forge](https://github.com/xiaoyuai1/next-open-forge) 仓库的实际分析结果(基于 main 分支,commit `ac24745`),并在 2026-10-07 完成 vinext + Cloudflare Workers 迁移后同步更新。
+> **以后在本仓库的一切开发任务,先读本档,按「第 8 节 架构约定」「第 9 节 常见任务 SOP」「第 12 节 vinext/Cloudflare 部署」执行。**
 >
 > ⚠️ 注意:仓库根 README.md 继承自上游 next-forge,与本仓库实际结构有出入,以本文档为准。
-
----
+>
+> 📌 **2026-10-07 重大变更**:依赖全量升级到最新;apps/app 与 apps/docs 已迁移到 vinext 构建并部署到 Cloudflare Workers(forge.3webweb.com / forge-docs.3webweb.com);数据库从 PostgreSQL(node-postgres)迁移到 Cloudflare D1(SQLite);`cacheComponents` 已关闭。apps/web 与 apps/storybook 保持 Next.js 工具链,不参与部署。
 
 ## 1. 项目概述
 
-next-open-forge 是 [next-forge](https://www.next-forge.com) 的开源替代版 fork:把上游的专有服务(Clerk、Stripe、Axiom、Better Stack 等)替换为开源方案(Better Auth、PostHog 自托管、console 等),并裁剪掉不常用服务,形成一个**生产级 Turborepo + Next.js 模板**。
+next-open-forge 是 [next-forge](https://www.next-forge.com) 的开源替代版 fork:把上游的专有服务(Clerk、Stripe、Axiom、Better Stack 等)替换为开源方案(Better Auth、PostHog 自托管、console 等),并裁剪掉不常用服务,形成一个**生产级 Turborepo + Next.js 模板**(现已同时支持 vinext/Vite 工具链部署到 Cloudflare)。
 
 设计理念(继承上游):Fast / Cheap / Opinionated / Modern / Safe(端到端类型安全)。
 
-## 2. 技术栈与版本(以 package.json 为准)
+## 2. 技术栈与版本(以 package.json 为准,2026-10-07 更新)
 
 | 类别 | 选型 | 版本 |
 | --- | --- | --- |
-| 运行时 | Node.js | `>=22`(CI 用 24) |
-| 包管理 | pnpm(`packageManager` 锁定) | `pnpm@10.25.0` |
-| Monorepo | Turborepo + pnpm workspace | turbo `^2.8.3` |
-| 框架 | Next.js(App Router,cacheComponents 开启) | `16.1.6` |
-| UI 运行时 | React | `19.2.4` |
-| 样式 | Tailwind CSS v4(PostCSS 插件,无 config 文件) | `^4.1.18` |
-| 组件库 | shadcn/ui(style: `radix-vega`,base-ui + radix-ui)+ lucide 图标 | shadcn `^3.8.2` |
-| 认证 | Better Auth(email+password,nextCookies,username 插件) | `^1.4.18` |
-| ORM | Drizzle ORM(node-postgres) | `^0.45.1` / kit `^0.31.8` |
-| 数据库 | PostgreSQL | — |
-| 校验 | Zod | `^4.3.6` |
-| 环境变量 | @t3-oss/env-nextjs(每包 `keys.ts` 模式) | `^0.13.10` |
-| 分析 | PostHog(posthog-js + posthog-node) | — |
-| Lint/Format | Ultracite(Biome 封装) | `7.1.4` / biome `2.3.14` |
-| 测试 | Vitest + Testing Library(jsdom) | `^4.0.18` |
-| 文档站 | Fumadocs(fumadocs-mdx) | `^16.5.0` |
+| 运行时 | Node.js | `>=24`(本机 24.21) |
+| 包管理 | pnpm(`packageManager` 锁定) | `pnpm@12.9.1`(注意 pnpm 12 的 `allowBuilds` 配置) |
+| Monorepo | Turborepo + pnpm workspace | turbo `^2.11.7` |
+| 框架 | Next.js(仅 web/storybook 与类型兜底) | `16.3.8` |
+| 构建与部署 | **vinext + @vinext/cloudflare**(app 与 docs) | `1.0.1` + `@cloudflare/vite-plugin 2.0.0-beta.sha-52b0dc0e9` + `cf 1.0.0-beta.12` + vite `8.3.0` |
+| UI 运行时 | React | `19.3.0` |
+| 样式 | Tailwind CSS v4(PostCSS 插件,无 config 文件) | `^4.3.3` |
+| 组件库 | shadcn/ui(style: `radix-vega`,base-ui + radix-ui)+ lucide 图标 | shadcn `^4.21.2`,lucide-react `^1.52.0` |
+| 认证 | Better Auth(email+password,nextCookies,username 插件) | `^1.7.7` |
+| ORM | Drizzle ORM(**D1/SQLite 驱动**,d1 内置于 drizzle-orm) | `^0.45.3` / kit `^0.31.11` |
+| 数据库 | **Cloudflare D1**(binding 名 `DB`,库名 `forge-db`) | — |
+| 校验 | Zod | `^4.6.5` |
+| 环境变量 | @t3-oss/env-nextjs(每包 `keys.ts` 模式) | `^0.13.11` |
+| 分析 | PostHog(posthog-js + posthog-node) | `^1.438.1` / `^5.55.0` |
+| Lint/Format | Ultracite(Biome 封装,预设路径改为 `ultracite/biome/*`) | `7.12.4` / biome `2.5.15` |
+| 测试 | Vitest + Testing Library(jsdom) | `^5.0.3` |
+| 文档站 | Fumadocs(fumadocs-mdx,**经 `fumadocs-mdx/vite` 插件编译**) | `^16.16.1` / mdx `^15.4.6` |
 | 组件工作台 | Storybook | `^10.2.7` |
-| 国际化 | next-international + languine(**未接入**) | `^1.3.1` |
-| TypeScript | strict,ES2022,NodeNext | `^5.9.3` |
+| 国际化 | next-international + languine(apps/web 已用) | `^1.3.1` |
+| TypeScript | strict(**TS 7.0.2**,Go 原生 tsc;无 baseUrl) | `^7.0.2` |
 
 ## 3. 仓库结构
 
@@ -295,9 +296,9 @@ CI(`.github/workflows/check.yaml`):push/PR → main 时跑 `npm ci && npm run ch
 2. **服务端专用模块标 `"server-only"`**(如 auth/handlers、product/server),防止客户端意外引入。
 3. **Server Actions 三件套**:页面功能按 `actions/index.ts`("use server")+ `schemas/index.ts`(zod 4)+ `components/`(react-hook-form + @hookform/resolvers)组织,参照 sign-in/sign-up 现有实现;错误用 `parseError`。
 4. **认证守卫放布局层**:`(authenticated)`/`(unauthenticated)` 路由组 + `requireAuthenticatedUser` / `requireUnauthenticatedUser`(经 `app/actions/auth.ts` 封装,自带 redirect 目标)。不要用 middleware 做会话守卫(auth/proxy.ts 仅是参考实现,未启用)。
-5. **Cache Components 已开启**(`cacheComponents: true`):动态数据访问要用 `"use cache"`(私有数据 `"use cache: private"` + `cacheTag`,参照 auth/index.ts 的 currentUser)或 `await connection()`;否则 build 阶段会报动态访问未缓存错误。改了缓存数据记得配 `revalidateTag`。
+5. **Cache Components 已关闭(2026-10-07,vinext 兼容性)**:不要使用 `"use cache"` / `"use cache: private"` / `cacheTag` / `cacheLife` / `revalidateTag(tag, profile)`。动态数据在 server component 里直接 `await`;数据读取一律通过 `getDatabase()`(不再有模块级 `database` 单例)。
 6. **UI 只从 design-system 引**:不在 app 里直接装 shadcn / 自己写 ui 基础件;新组件加到 packages/design-system,并在 storybook 补 stories;主题切换用现成 `ModeToggle`。
-7. **数据库变更只走 schemas**:业务表新建 `schemas/<name>.ts` 并在 `schemas/index.ts` 注册;`schemas/auth.ts` 是 Better Auth 生成物,禁止手改;流程:`写 schema → pnpm migrate(生成 SQL)→ pnpm push(落库)`,迁移产物进 `packages/database/drizzle/` 一并提交。
+7. **数据库变更只走 schemas**:业务表新建 `schemas/<name>.ts`(SQLite 方言,`drizzle-orm/sqlite-core`)并在 `schemas/index.ts` 注册;`schemas/auth.ts` 是 Better Auth 四表的 SQLite 手工转换物,禁止手改;流程:`写 schema → pnpm migrate(生成 SQL)→ 应用到 D1(本地注入 / 远程走 API,见第 12 节)`,迁移产物进 `packages/database/drizzle/` 一并提交。
 8. **错误上报统一 `parseError`**(客户端、服务端通用);Error Boundary 上报参照 `global-error.tsx`(`product.captureException`)。
 9. **包命名 `@repo/*`,内部依赖一律 `workspace:*`**;新建包用 `turbo gen init` 起步,package.json 不带 version/private 按模板。
 10. **TypeScript**:strict、type(不用 interface,biome `useConsistentTypeDefinitions`);导出函数具名,barrel file 会被 biome 警告(现有 `export *` 处都带了 biome-ignore 注释,新代码避免)。
@@ -354,7 +355,11 @@ npx shadcn@latest add <component> -c packages/design-system
 9. **Node/包管理器**:engines `>=22`,CI Node 24;pnpm 版本由 `packageManager` 锁定(corepack enable 可自动对齐)。Windows 下注意使用 Git Bash 时路径引号。
 10. **Zod 4**:校验 API 用新写法(如 `z.url()`、`z.string().email()` 仍可用但新代码优先 `z.email()` 风格),与网上的 zod v3 教程有差异。
 11. **国际化包未接入**(见 5.7),别以为页面文案会自动多语言。
-12. **design-system 的 biome 排除目录**(`components/ui`、`lib`、`hooks`)内文件不 lint;改动后 `pnpm check` 不会覆盖它们,需自行保证质量。
+12. **design-system 的 biome 排除目录**(`components/ui`、`lib`、`hooks`)内文件不 lint;改动后 `pnpm check` 不会覆盖它们,需自行保证质量。**其中的 `radix-ui` 导入组件必须带 `"use client"` 头(badge/breadcrumb/button-group/button/item/navigation-menu 已加)——漏掉会让统一包 radix-ui 进入 rsc 服务端构建,rolldown 内存爆炸至 20GB+ 后原生崩溃(0xC0000409)**。
+13. **pnpm 12**:依赖构建脚本白名单在 `pnpm-workspace.yaml` 的 `allowBuilds`(映射而非列表);workerd/esbuild/sharp 等已放行,新装含构建脚本的包要补。
+14. **TS 7**:已移除所有 tsconfig 的 `baseUrl`(TS7 移除了该选项),paths 相对 tsconfig 所在目录解析;`@repo/database` 的导出必须显式类型注解(`DrizzleD1Database<typeof schemas>`),否则 TS7 报"类型不可移植"。
+15. **Next 16.3.8**:`next build --port` 已移除(build 无端口概念);`next build` 仍可验证 web/storybook 与类型。
+16. **`apps/web` 与 `apps/studio` 实际存在**(web 是 i18n 营销站、studio 是 drizzle-kit studio 工具),与上游 README 描述不同;两者不部署到 Workers。
 
 ## 11. 参考链接
 
@@ -368,3 +373,80 @@ npx shadcn@latest add <component> -c packages/design-system
 - PostHog:https://posthog.com
 - next-international:https://next-international.vercel.app
 - t3-env:https://env.t3.gg
+
+---
+
+## 12. vinext / Cloudflare Workers 部署(2026-10-07 上线)
+
+### 12.1 线上拓扑(全免费套餐)
+
+| 资源 | 值 |
+| --- | --- |
+| 主应用 Worker / 域名 | `forge` / **https://forge.3webweb.com** |
+| 文档站 Worker / 域名 | `forge-docs` / **https://forge-docs.3webweb.com** |
+| 缓存 Worker(app 专用) | `forge-response-store`(service binding,无对外路由) |
+| R2 桶 | `forge-response-store-cache-bodies`(APAC) |
+| D1 数据库 | `forge-db`(APAC,uuid `7a742070-e1ec-42e6-acd8-41a5b226be46`,binding 名 `DB`) |
+| KV(docs 数据缓存) | `VINEXT_KV_CACHE`(部署时自动开通) |
+| 账号 | `0ce2869905292483d658d486a6e31a3c`,zone `3webweb.com`(ID `de9b3c4a11288a5bcc8a038569ec83d3`) |
+| Secret | `BETTER_AUTH_SECRET`(cf deploy --secrets-file 注入,文件用后即删) |
+
+### 12.2 本地开发(app)
+
+```bash
+pnpm install
+pnpm --filter app dev:vinext     # vite dev,http://localhost:3001
+```
+
+- 本地密钥放 `apps/app/.dev.vars`(`BETTER_AUTH_SECRET=...`,已 gitignore)。
+- 本地 D1 状态在 `apps/app/.cloudflare/state/v3/d1/`(vite dev 自动创建;**别在 dev 运行时执行构建,残留进程会锁住 state**)。
+- 首次建表:启动 dev → 随便发一个会触库的请求让 miniflare 生成 sqlite 文件 → 停 dev → 用 `node:sqlite`(`node -e`,Node 24 内置)把 `packages/database/drizzle/*.sql` 按 `--> statement-breakpoint` 分段执行进去 → 重启 dev。
+- **数据库访问统一 `getDatabase()`**(`@repo/database`),它每次调用从 `cloudflare:workers` 的 `env.DB` 新建 drizzle 实例——不要在模块顶层捕获 binding。
+- 环境变量:server 端 secret 走 Worker env(`BETTER_AUTH_SECRET`);`NEXT_PUBLIC_*` 由构建期内联(dev 从 `.env.local` 读)。
+
+### 12.3 构建与部署
+
+```bash
+# 主应用(apps/app)
+pnpm --filter app build:vinext          # 产出 .cloudflare/output/v0/workers/{default,forge-response-store}
+pnpm --filter app deploy:response-store # 部署缓存 Worker(仅其依赖/配置变化时需要)
+npx vinext-cloudflare deploy --skip-build --cwd apps/app
+# 若 Worker 上声明了新的 secret binding 且尚未设置,改用:
+#   1) 生成 .prod-secrets.tmp(BETTER_AUTH_SECRET=xxx)  2) npx cf deploy --prebuilt --mode production --secrets-file .prod-secrets.tmp
+#   3) 立即删除该文件
+
+# 文档站(apps/docs)
+pnpm --filter docs build:vinext         # = fumadocs-mdx && vite build
+npx vinext-cloudflare deploy --skip-build --cwd apps/docs
+```
+
+- 域名在各自 `cloudflare.config.ts` 的 `domains` 字段声明,部署时自动挂 Custom Domain(不要手动建 DNS/CNAME)。
+- `accountId` 必须在 `defineConfig` **顶层**,放 `worker` 里会校验失败。
+- docs 的 ISR 内容需要持久缓存,已配 `kvDataAdapter()` + `VINEXT_KV_CACHE` binding。
+- 部署卡死排查:`npx vinext-cloudflare deploy` 若长时间无输出,先杀残留 node 进程再用 `< /dev/null` 重跑。
+
+### 12.4 数据库迁移(远程)
+
+`drizzle-kit generate` 只生成 SQL;应用到远程 D1 走 Cloudflare API:
+
+```
+POST /accounts/{account_id}/d1/database/{forge-db uuid}/query   body: { sql }
+```
+
+按 `--> statement-breakpoint` 分段逐条执行即可(ER 图变更同样先 generate 后 apply)。
+
+### 12.5 验收清单
+
+- `curl https://forge.3webweb.com/api/auth/ok` → `{"ok":true}`
+- 未登录访问 `/` → 307 到 `/sign-in`;注册/登录/登出全流程可用
+- `curl -D - https://forge-docs.3webweb.com/docs` → `X-Vinext-Cache: HIT`(二次请求)
+- PostHog:`NEXT_PUBLIC_POSTHOG_KEY` 当前为占位值 `phc_dev_placeholder`(见各 app `.env.local`,已 gitignore)——接入真实 PostHog 项目后替换并重新构建部署。
+
+### 12.6 部署踩坑实录(2026-10-07)
+
+1. **radix-ui 统一包 × rsc 环境 = rolldown 内存爆炸**:design-system 组件若缺 `"use client"` 头,统一包 radix-ui 会被拉进服务端 rsc 构建,内存涨到 20GB+ 后原生崩溃(Windows 0xC0000409,无任何 JS 栈)。修复=补 `"use client"`(见第 10 节第 12 条)。调试时用「内存看门狗 + 最小化二分」:构建脚本轮询 node 进程内存、超 6GB 强杀,再逐块加回模块定位。
+2. **`@cloudflare/workers-response-store` 必须是 app 的直接依赖**:pnpm 不提升传递依赖,Response Store Worker 的入口 `@cloudflare/workers-response-store/service` 从项目根解析不到,构建期 rolldown 原生崩溃(dev 期则报 500 resolve 错误)。npm 项目靠提升侥幸可用,pnpm 必须显式声明。
+3. **Better Auth 路由文件必须 `[...all]/route.ts`**:fork 原来的 `app/api/auth/[...all].ts` 不符合 App Router 约定,所有 /api/auth/* 请求被路由层吞掉 307 到 /sign-in。
+4. **fumadocs-mdx 在 vinext 下需要 `fumadocs-mdx/vite` 插件**:`?collection=` MDX 模块无 loader 时 es-module-lexer 直接 parse error;fumadocs-mdx 15+ 官方导出 `./vite` 插件,放进 vite plugins 即可。
+5. **ISR 检测会阻断无缓存适配器的部署**:docs 有 ISR 内容时,生产部署强制要求持久缓存(配 KV data adapter 即可)。
+6. **Worker 尚不存在时无法预先 `wrangler secret put`**:首次部署带 secret binding 用 `cf deploy --secrets-file <file>`,部署完立即删除文件。
