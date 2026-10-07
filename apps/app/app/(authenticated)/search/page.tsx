@@ -1,4 +1,4 @@
-import { database } from "@repo/database";
+import { getDatabase } from "@repo/database";
 import { redirect } from "next/navigation";
 import { Header } from "../components/header";
 
@@ -21,7 +21,7 @@ export const generateMetadata = async ({
 
 const SearchPage = async ({ searchParams }: SearchPageProperties) => {
   const { q } = await searchParams;
-  const pages = await database.query.pages.findMany({
+  const pages = await getDatabase().query.pages.findMany({
     where: (page, { like }) => like(page.name, `%${q}%`),
   });
 

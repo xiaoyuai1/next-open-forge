@@ -8,9 +8,15 @@
     "dev": "next dev -p 3000",
     "start": "next start",
     "test": "vitest run",
-    "typecheck": "tsc --noEmit --emitDeclarationOnly false"
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false",
+    "dev:vinext": "vite dev --port 3001",
+    "build:vinext": "vite build",
+    "start:vinext": "vite preview",
+    "deploy:vinext": "vinext-cloudflare deploy",
+    "deploy:response-store": "cf deploy --prebuilt --mode production --worker forge-response-store"
   },
   "dependencies": {
+    "@cloudflare/workers-response-store": "1.0.1",
     "@hookform/resolvers": "^5.9.1",
     "@repo/auth": "workspace:*",
     "@repo/database": "workspace:*",
@@ -19,17 +25,20 @@
     "@repo/product": "workspace:*",
     "@repo/seo": "workspace:*",
     "@t3-oss/env-nextjs": "^0.13.11",
+    "@vinext/cloudflare": "^1.0.1",
     "fuse.js": "^7.5.0",
     "lucide-react": "^1.52.0",
     "next": "16.3.8",
     "next-themes": "^0.4.6",
-    "pg": "^8.23.1",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "react-hook-form": "^7.89.0",
+    "react-server-dom-webpack": "^19.3.0",
+    "vinext": "^1.0.1",
     "zod": "^4.6.5"
   },
   "devDependencies": {
+    "@cloudflare/vite-plugin": "2.0.0-beta.sha-52b0dc0e9",
     "@repo/typescript-config": "workspace:*",
     "@testing-library/dom": "^10.4.2",
     "@testing-library/react": "^16.3.3",
@@ -37,9 +46,13 @@
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "@vitejs/plugin-react": "^6.1.2",
+    "@vitejs/plugin-rsc": "^0.5.35",
+    "cf": "1.0.0-beta.12",
     "jsdom": "^30.1.2",
     "tailwindcss": "^4.3.3",
     "typescript": "^7.0.2",
+    "vite": "8.3.0",
     "vitest": "^5.0.3"
-  }
+  },
+  "type": "module"
 }

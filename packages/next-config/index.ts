@@ -2,7 +2,6 @@ import withBundleAnalyzer from "@next/bundle-analyzer";
 import type { NextConfig } from "next";
 
 export const config: NextConfig = {
-  cacheComponents: true,
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [

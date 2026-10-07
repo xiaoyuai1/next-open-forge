@@ -1,4 +1,4 @@
-import { database } from "@repo/database";
+import { getDatabase } from "@repo/database";
 import type { Metadata } from "next";
 import { Header } from "./components/header";
 
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 export default async function App() {
-  const pages = await database.query.pages.findMany();
+  const pages = await getDatabase().query.pages.findMany();
 
   return (
     <>

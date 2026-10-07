@@ -11,6 +11,7 @@
     "next.config.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    ".cloudflare/types/**/*.ts"
   ]
 }

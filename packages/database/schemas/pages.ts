@@ -1,6 +1,6 @@
-import { pgTable, serial, varchar } from "drizzle-orm/pg-core";
+import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
-export const pages = pgTable("page", {
-  id: serial("id"),
-  name: varchar("name", { length: 256 }),
+export const pages = sqliteTable("page", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  name: text("name"),
 });
